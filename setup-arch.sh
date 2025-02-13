@@ -10,10 +10,14 @@ repo="mylinuxforwork/dotfiles"
 # Download Folder
 # -----------------------------------------------------
 download_folder="$HOME/.ml4w"
+# -----------------------------------------------------
+# Download Folder
+# -----------------------------------------------------
+repos_folder="$HOME/.repos"
 
 # Create download_folder if not exists
 if [ ! -d $download_folder ]; then
-    mkdir -p $download_folder
+    mkdir -p $repos_folder
 fi
 
 # Get latest tag from GitHub
@@ -106,7 +110,7 @@ cat <<"EOF"
 /___/_//_/___/\__/\_,_/_/_/\__/_/
 
 EOF
-echo "ML4W Dotfiles for Hyprland"
+echo "ml4w Alesanchezb Dotfiles for Hyprland"
 echo -e "${NONE}"
 while true; do
     read -p "DO YOU WANT TO START THE INSTALLATION NOW? (Yy/Nn): " yn
@@ -175,8 +179,8 @@ echo
 
 # Select the dotfiles version
 echo "Please choose between: "
-echo "- ML4W Dotfiles for Hyprland $latest_version (latest stable release)"
-echo "- ML4W Dotfiles for Hyprland Rolling Release (main branch including the latest commits)"
+echo "- ML4W-Alesanchezb Dotfiles for Hyprland $latest_version (latest stable release)"
+echo "- ML4W-Alesanchezb Dotfiles for Hyprland Rolling Release (main branch including the latest commits)"
 echo
 version=$(gum choose "main-release" "rolling-release" "CANCEL")
 if [ "$version" == "main-release" ]; then
@@ -192,6 +196,36 @@ else
     echo ":: Setup canceled"
     exit 130
 fi
+
+echo "Emacs Installation"
+echo -e "${NONE}"
+while true; do
+    read -p "DO YOU WANT TO START THE INSTALLATION NOW? (Yy/Nn): " yn
+    case $yn in
+        [Yy]*)
+            echo ":: Installation started."
+            # Create download_folder if not exists
+            if [ ! -d $repos_folder ]; then
+                mkdir -p $repos_folder
+            fi
+            git clone https://github.com/AleSanchezB/emacs-config.git
+            cd emacs-config
+            chmod +x scripts/install.sh
+            ./scripts/install.sh
+            break
+            ;;
+        [Nn]*)
+            echo ":: Installation canceled"
+            exit
+            break
+            ;;
+        *)
+            echo ":: Please answer yes or no."
+            ;;
+    esac
+done
+
+
 echo ":: Installation complete."
 echo
 # Start Spinner
